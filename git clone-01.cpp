@@ -1,1 +1,0 @@
-powershell -NoExit -ExecutionPolicy Bypass -File "D:\GitHub\SillyTavern-Gruvbox-ColorControls\上传Gruvbox扩展到GitHub-防闪退版.ps1"
