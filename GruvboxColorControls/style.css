@@ -70,12 +70,12 @@
   border-color: var(--gmcc-preview-hover, #69a54b) !important;
 }
 
-/* Compact color rows: show a labeled color swatch button until opened. */
-.gmcc-settings .gmcc-color-header { display:flex; align-items:center; justify-content:space-between; gap:.75em; }
-.gmcc-settings .gmcc-color-title { font-weight:600; min-width:0; }
-.gmcc-settings .gmcc-color-trigger { min-width:7.2em; max-width:55%; border:1px solid rgba(255,255,255,.35); border-radius:6px; padding:.4em .7em; font:600 .9em var(--font-mono,monospace); cursor:pointer; box-shadow:inset 0 0 0 1px rgba(0,0,0,.12); }
-.gmcc-settings .gmcc-color-trigger:hover { filter:brightness(1.08); transform:translateY(-1px); }
-.gmcc-settings .gmcc-color-editor { border-top:1px solid var(--SmartThemeBorderColor,rgba(128,128,128,.25)); margin-top:.65em; padding-top:.55em; }
-.gmcc-settings .gmcc-color-editor[hidden] { display:none !important; }
-.gmcc-settings .gmcc-bg-fit-row { display:flex; flex-wrap:wrap; align-items:center; gap:.6em; margin:.7em 0; }
-.gmcc-settings #gmcc-bg-fit { min-width:14em; max-width:100%; }
+
+/* Composer auto-hide: preserve the native composer while showing a compact two-icon bar. */
+.gmcc-settings .gmcc-composer-toggle { display: flex; align-items: center; gap: .55em; margin: .65em 0; cursor: pointer; }
+.gmcc-settings .gmcc-composer-toggle input { margin: 0; }
+#send_form.gmcc-composer-collapsed > :not(#gmcc-composer-collapsed-bar) { display: none !important; }
+#send_form > #gmcc-composer-collapsed-bar[hidden] { display: none !important; }
+#send_form.gmcc-composer-collapsed > #gmcc-composer-collapsed-bar { display: flex !important; align-items: center; justify-content: flex-end; gap: .45em; width: 100%; min-height: 2.5em; box-sizing: border-box; margin: 0; padding: .25em .4em; }
+#gmcc-composer-collapsed-bar .gmcc-composer-icon-button { display: inline-flex; align-items: center; justify-content: center; min-width: 2.35em; width: 2.35em; height: 2.25em; padding: 0; border-radius: 6px; background: var(--gmcc-chat-button-bg, rgba(40,40,40,.88)); color: var(--gmcc-chat-button-text, #d4be98); border: 1px solid var(--gmcc-chat-button-border, #665c54); }
+#gmcc-composer-collapsed-bar .gmcc-composer-icon-button:hover { background: var(--gmcc-chat-button-hover, #69a54b); border-color: var(--gmcc-chat-button-hover, #69a54b); color: var(--gmcc-chat-button-text, #d4be98); }

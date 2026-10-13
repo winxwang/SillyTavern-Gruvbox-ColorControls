@@ -77,6 +77,12 @@
       </section>
 
 
+      <section class="gmcc-section gmcc-composer-section">
+        <h4>输入框自动隐藏</h4>
+        <label class="gmcc-composer-toggle"><input type="checkbox" id="gmcc-composer-auto-hide"> 发送消息后自动隐藏输入框</label>
+        <p class="gmcc-note">开启后，发送消息时会收起编辑区域，仅保留发送图标和展开图标。点击展开图标即可恢复完整输入框继续编辑；关闭开关后会恢复酒馆原本的输入区域。</p>
+      </section>
+
       <section class="gmcc-section gmcc-chat-buttons-section">
         <h4>聊天界面功能按钮颜色</h4>
         <p class="gmcc-note">调整消息下方的编辑、复制、重生成、切换回复等常用按钮，以及发送/继续等聊天操作按钮。删除、取消等危险操作按钮尽量保留酒馆原有警示色。</p>
@@ -116,16 +122,6 @@
           <label class="menu_button gmcc-bg-pick" for="gmcc-bg-files">选择背景图片</label>
           <input id="gmcc-bg-files" type="file" accept="image/*" multiple hidden>
         </div>
-        <label class="gmcc-bg-fit-row">背景图片适应形式
-          <select id="gmcc-bg-fit">
-            <option value="cover">填充（覆盖整个区域）</option>
-            <option value="contain">适应（完整显示图片）</option>
-            <option value="stretch">拉伸（铺满宽高）</option>
-            <option value="tile">平铺（重复图片）</option>
-            <option value="center">居中（原始尺寸）</option>
-            <option value="across">跨区（固定覆盖整个页面）</option>
-          </select>
-        </label>
         <div class="gmcc-bg-auto-row">
           <label><input type="checkbox" id="gmcc-bg-auto"> 自动定时切换背景</label>
           <label>切换间隔（分钟） <input type="number" id="gmcc-bg-interval" min="1" max="1440" step="1" value="5"></label>

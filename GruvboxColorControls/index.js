@@ -4,7 +4,8 @@ const DEFAULTS = Object.freeze({
   userColor: '#69a54b', userAlpha: 24, botColor: '#69a54b', botAlpha: 24,
   pageColor: '#000000', pageAlpha: 0, chatColor: '#000000', chatAlpha: 0,
   chatButtonBgColor: '#282828', chatButtonBgAlpha: 88, chatButtonTextColor: '#d4be98', chatButtonHoverColor: '#69a54b', chatButtonBorderColor: '#665c54',
-  backgroundEnabled: false, backgroundFit: 'cover', backgroundAutoSwitch: false, backgroundInterval: 5, backgroundIndex: 0, backgroundImages: [],
+  backgroundEnabled: false, backgroundAutoSwitch: false, backgroundInterval: 5, backgroundIndex: 0, backgroundImages: [],
+  composerAutoHide: false,
 });
 const PALETTE = [
   ['Gruvbox 米白', '#D4BE98'], ['奶油白', '#F2E5BC'], ['纯白', '#FFFFFF'], ['浅灰', '#C6C6C6'],
@@ -88,11 +89,6 @@ function updateColorControls($root, key, color) {
   $root.find(`[data-rgb-for="${key}"] [data-channel="g"]`).val(rgb.g);
   $root.find(`[data-rgb-for="${key}"] [data-channel="b"]`).val(rgb.b);
   $root.find(`[data-color-control="${key}"]`).css('--gmcc-current-color', color);
-  const $trigger = $root.find(`[data-toggle-color="${key}"]`);
-  if ($trigger.length) {
-    $trigger.css({ backgroundColor: color, color: (hexToRgb(color).r * 299 + hexToRgb(color).g * 587 + hexToRgb(color).b * 114) / 1000 > 145 ? '#202020' : '#ffffff' });
-    $trigger.text(color.toUpperCase());
-  }
 }
 function renderPalette($root, key, containerSelector) {
   const $container = $root.find(containerSelector);
@@ -105,27 +101,6 @@ function renderPalette($root, key, containerSelector) {
     $container.append($button);
   }
 }
-function decorateColorControls($root) {
-  $root.find('.gmcc-color-control').each(function () {
-    const $control = $(this);
-    if ($control.data('gmccDecorated')) return;
-    const key = this.dataset.colorControl;
-    const $label = $control.children('.gmcc-color-label').first();
-    const labelText = $label.text().trim();
-    const $header = $('<div class="gmcc-color-header"></div>');
-    const $title = $('<span class="gmcc-color-title"></span>').text(labelText);
-    const $trigger = $('<button type="button" class="gmcc-color-trigger" aria-expanded="false"></button>')
-      .attr('data-toggle-color', key).attr('aria-label', labelText + '：打开颜色设置');
-    const $editor = $('<div class="gmcc-color-editor" hidden></div>');
-    $label.remove();
-    $control.children().each(function () {
-      $editor.append(this);
-    });
-    $header.append($title, $trigger);
-    $control.append($header, $editor);
-    $control.data('gmccDecorated', true);
-  });
-}
 function syncControls($root, settings) {
   for (const key of Object.keys(DEFAULTS)) {
     if (typeof DEFAULTS[key] === 'string' && key.toLowerCase().includes('color') || ['mainText', 'userText', 'botText', 'speechText'].includes(key)) {
@@ -137,6 +112,7 @@ function syncControls($root, settings) {
     $root.find(`[data-key="${key}"]`).val(settings[key]);
     $root.find(`[data-output="${key}"]`).text(`${settings[key]}%`);
   }
+  $root.find('#gmcc-composer-auto-hide').prop('checked', !!settings.composerAutoHide);
   renderPalette($root, null, '#gmcc-global-palette');
 }
 // 给常见引号中的人物对白添加独立颜色，不改写原始消息文本。
@@ -213,20 +189,10 @@ function applyBackgroundImage(settings) {
   const item = settings.backgroundImages[settings.backgroundIndex];
   if (!item?.dataUrl) return;
   target.style.backgroundImage = `url("${item.dataUrl}")`;
-  const fit = settings.backgroundFit || 'cover';
-  const fitStyles = {
-    cover: { size: 'cover', position: 'center center', repeat: 'no-repeat', attachment: 'scroll' },
-    contain: { size: 'contain', position: 'center center', repeat: 'no-repeat', attachment: 'fixed' },
-    stretch: { size: '100% 100%', position: 'center center', repeat: 'no-repeat', attachment: 'fixed' },
-    tile: { size: 'auto', position: 'top left', repeat: 'repeat', attachment: 'fixed' },
-    center: { size: 'auto', position: 'center center', repeat: 'no-repeat', attachment: 'fixed' },
-    across: { size: 'cover', position: 'center center', repeat: 'no-repeat', attachment: 'fixed' },
-  };
-  const style = fitStyles[fit] || fitStyles.cover;
-  target.style.backgroundSize = style.size;
-  target.style.backgroundPosition = style.position;
-  target.style.backgroundRepeat = style.repeat;
-  target.style.backgroundAttachment = style.attachment;
+  target.style.backgroundSize = 'cover';
+  target.style.backgroundPosition = 'center center';
+  target.style.backgroundRepeat = 'no-repeat';
+  target.style.backgroundAttachment = 'fixed';
 }
 function stopBackgroundTimer() {
   if (backgroundTimer !== null) window.clearInterval(backgroundTimer);
@@ -287,6 +253,100 @@ function imageFileToDataUrl(file) {
   });
 }
 
+// Automatically collapse the SillyTavern composer after a message is sent.
+// The real composer DOM is left intact; the compact bar only proxies its send button.
+function setComposerCollapsed(collapsed) {
+  const form = document.querySelector('#send_form');
+  if (!form) return;
+  const bar = form.querySelector('#gmcc-composer-collapsed-bar');
+  const enabled = !!getSettings().composerAutoHide;
+  const shouldCollapse = !!collapsed && enabled;
+  form.classList.toggle('gmcc-composer-collapsed', shouldCollapse);
+  if (bar) {
+    bar.hidden = !shouldCollapse;
+    const expand = bar.querySelector('#gmcc-composer-expand');
+    if (expand) expand.setAttribute('aria-expanded', String(!shouldCollapse));
+  }
+  if (!shouldCollapse && collapsed === false) {
+    const textarea = document.querySelector('#send_textarea');
+    if (textarea) textarea.focus({ preventScroll: true });
+  }
+}
+
+function ensureComposerCollapseBar() {
+  const form = document.querySelector('#send_form');
+  if (!form) return null;
+  let bar = form.querySelector('#gmcc-composer-collapsed-bar');
+  if (bar) return bar;
+  bar = document.createElement('div');
+  bar.id = 'gmcc-composer-collapsed-bar';
+  bar.className = 'gmcc-composer-collapsed-bar';
+  bar.hidden = true;
+  bar.innerHTML = `
+    <button type="button" id="gmcc-composer-proxy-send" class="menu_button gmcc-composer-icon-button" title="发送 / 继续" aria-label="发送 / 继续"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
+    <button type="button" id="gmcc-composer-expand" class="menu_button gmcc-composer-icon-button" title="展开输入框" aria-label="展开输入框" aria-expanded="false"><i class="fa-solid fa-expand-alt" aria-hidden="true"></i></button>
+  `;
+  form.appendChild(bar);
+  return bar;
+}
+
+function setupComposerAutoHide(settings) {
+  window.__gmccComposerSettings = settings;
+  const setup = () => {
+    const form = document.querySelector('#send_form');
+    if (!form) return false;
+    ensureComposerCollapseBar();
+    if (!document.documentElement.dataset.gmccComposerDelegates) {
+      document.documentElement.dataset.gmccComposerDelegates = '1';
+      document.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+        if (!target) return;
+        if (target.closest('#gmcc-composer-expand')) {
+          setComposerCollapsed(false);
+          return;
+        }
+        if (target.closest('#gmcc-composer-proxy-send')) {
+          document.querySelector('#send_but')?.click();
+          return;
+        }
+        if (target.closest('#send_but')) {
+          window.setTimeout(() => {
+            const current = window.__gmccComposerSettings;
+            const textarea = document.querySelector('#send_textarea');
+            if (current?.composerAutoHide && textarea && !textarea.value.trim()) setComposerCollapsed(true);
+          }, 450);
+        }
+      }, true);
+      document.addEventListener('keydown', (event) => {
+        if (event.target?.id !== 'send_textarea' || event.key !== 'Enter' || event.shiftKey || event.isComposing) return;
+        window.setTimeout(() => {
+          const current = window.__gmccComposerSettings;
+          const textarea = document.querySelector('#send_textarea');
+          if (current?.composerAutoHide && textarea && !textarea.value.trim()) setComposerCollapsed(true);
+        }, 500);
+      }, true);
+    }
+    return true;
+  };
+  // SillyTavern may rebuild the composer; ensure the compact bar exists when available.
+  if (!setup() && !window.__gmccComposerObserver) {
+    window.__gmccComposerObserver = new MutationObserver(() => {
+      if (setup()) window.__gmccComposerObserver.disconnect();
+    });
+    window.__gmccComposerObserver.observe(document.body, { childList: true, subtree: true });
+  }
+  // Prefer the host's message-sent event, with click/Enter fallbacks above.
+  const hostEventSource = window.eventSource || (typeof eventSource !== 'undefined' ? eventSource : null);
+  const hostEventTypes = window.event_types || (typeof event_types !== 'undefined' ? event_types : null);
+  if (!window.__gmccComposerEventHooked && hostEventSource && hostEventTypes?.MESSAGE_SENT) {
+    window.__gmccComposerEventHooked = true;
+    hostEventSource.on(hostEventTypes.MESSAGE_SENT, () => {
+      if (window.__gmccComposerSettings?.composerAutoHide) setComposerCollapsed(true);
+    });
+  }
+  if (!settings.composerAutoHide) setComposerCollapsed(false);
+}
+
 async function init() {
   if (!window.SillyTavern?.getContext || !window.jQuery) return;
   const ctx = SillyTavern.getContext();
@@ -302,30 +362,16 @@ async function init() {
     return;
   }
   const $root = $('#gm-color-controls');
-  decorateColorControls($root);
   syncControls($root, settings);
   if (!Array.isArray(settings.backgroundImages)) settings.backgroundImages = [];
   if (settings.backgroundInterval === undefined) settings.backgroundInterval = 5;
   applyBackgroundImage(settings);
-  $root.find('#gmcc-bg-fit').val(settings.backgroundFit || 'cover');
   updateBackgroundStatus($root, settings);
   configureBackgroundTimer(settings, $root, ctx);
+  setupComposerAutoHide(settings);
   let activeColorKey = 'speechText';
   $root.off('.gmcc');
 
-  $root.on('click.gmcc', '[data-toggle-color]', function () {
-    const key = this.dataset.toggleColor;
-    const $editor = $root.find(`[data-color-control="${key}"] .gmcc-color-editor`);
-    const opening = $editor.prop('hidden');
-    $editor.prop('hidden', !opening);
-    $(this).attr('aria-expanded', String(opening));
-    if (opening) activeColorKey = key;
-  });
-  $root.on('change.gmcc', '#gmcc-bg-fit', function () {
-    settings.backgroundFit = this.value;
-    applyBackgroundImage(settings);
-    ctx.saveSettingsDebounced();
-  });
   $root.on('focusin.gmcc click.gmcc', '[data-key], [data-hex-for], [data-rgb-key]', function () {
     activeColorKey = this.dataset.key || this.dataset.hexFor || this.dataset.rgbKey || activeColorKey;
   });
@@ -389,8 +435,16 @@ async function init() {
       if (window.toastr) toastr.info('浏览器未允许自动复制，请手动复制已选中的色值');
     }
   });
+  $root.on('change.gmcc', '#gmcc-composer-auto-hide', function () {
+    settings.composerAutoHide = this.checked;
+    window.__gmccComposerSettings = settings;
+    if (!settings.composerAutoHide) setComposerCollapsed(false);
+    setupComposerAutoHide(settings);
+    ctx.saveSettingsDebounced();
+  });
   $root.on('click.gmcc', '#gmcc-reset', function () {
     Object.assign(settings, { ...DEFAULTS, backgroundImages: [] });
+    setupComposerAutoHide(settings);
     syncControls($root, settings);
     applySettings(settings);
     applyBackgroundImage(settings);

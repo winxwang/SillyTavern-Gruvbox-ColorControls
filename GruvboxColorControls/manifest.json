@@ -1,5 +1,5 @@
 {
-  "display_name": "Gruvbox 主题调色、背景与按钮管理",
+  "display_name": "Gruvbox 主题调色、背景、按钮与输入框管理",
   "loading_order": 10,
   "js": "index.js",
   "css": "style.css",
