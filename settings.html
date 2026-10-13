@@ -1,0 +1,141 @@
+<div id="gm-color-controls" class="gmcc-settings">
+  <div class="inline-drawer">
+    <div class="inline-drawer-toggle inline-drawer-header">
+      <b>Gruvbox 主题可视化调色面板</b>
+      <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
+    </div>
+    <div class="inline-drawer-content">
+      <p class="gmcc-note">支持取色器、HEX 色值精确输入、RGB 数值微调和常用色板。调整即时生效并自动保存。</p>
+
+      <section class="gmcc-section">
+        <h4>文字颜色</h4>
+        <div class="gmcc-color-control" data-color-control="mainText">
+          <label class="gmcc-color-label" for="gmcc-mainText">全局文字颜色</label>
+          <div class="gmcc-color-tools"><input id="gmcc-mainText" type="color" data-key="mainText" aria-label="全局文字取色器"><input type="text" class="gmcc-hex" data-hex-for="mainText" value="#D4BE98" maxlength="7" spellcheck="false" aria-label="全局文字 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="mainText" title="复制 HEX 色值">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="mainText"><label>R <input type="number" min="0" max="255" data-rgb-key="mainText" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="mainText" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="mainText" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="mainText"></div>
+        </div>
+        <div class="gmcc-color-control" data-color-control="userText">
+          <label class="gmcc-color-label" for="gmcc-userText">用户消息文字</label>
+          <div class="gmcc-color-tools"><input id="gmcc-userText" type="color" data-key="userText" aria-label="用户文字取色器"><input type="text" class="gmcc-hex" data-hex-for="userText" value="#D4BE98" maxlength="7" spellcheck="false" aria-label="用户文字 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="userText">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="userText"><label>R <input type="number" min="0" max="255" data-rgb-key="userText" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="userText" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="userText" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="userText"></div>
+        </div>
+        <div class="gmcc-color-control" data-color-control="botText">
+          <label class="gmcc-color-label" for="gmcc-botText">AI 消息文字</label>
+          <div class="gmcc-color-tools"><input id="gmcc-botText" type="color" data-key="botText" aria-label="AI 文字取色器"><input type="text" class="gmcc-hex" data-hex-for="botText" value="#D4BE98" maxlength="7" spellcheck="false" aria-label="AI 文字 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="botText">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="botText"><label>R <input type="number" min="0" max="255" data-rgb-key="botText" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="botText" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="botText" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="botText"></div>
+        </div>
+        <div class="gmcc-color-control" data-color-control="speechText">
+          <label class="gmcc-color-label" for="gmcc-speechText">人物对白颜色（引号内文字）</label>
+          <div class="gmcc-color-tools"><input id="gmcc-speechText" type="color" data-key="speechText" aria-label="人物对白取色器"><input type="text" class="gmcc-hex" data-hex-for="speechText" value="#F2E5BC" maxlength="7" spellcheck="false" aria-label="人物对白 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="speechText">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="speechText"><label>R <input type="number" min="0" max="255" data-rgb-key="speechText" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="speechText" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="speechText" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="speechText"></div>
+          <p class="gmcc-note">识别中文弯引号、直角引号等常见引号中的对白，例如“你好”或「你好」。</p>
+        </div>
+      </section>
+
+      <section class="gmcc-section">
+        <h4>用户消息背景</h4>
+        <div class="gmcc-color-control" data-color-control="userColor">
+          <label class="gmcc-color-label" for="gmcc-userColor">背景颜色</label>
+          <div class="gmcc-color-tools"><input id="gmcc-userColor" type="color" data-key="userColor"><input type="text" class="gmcc-hex" data-hex-for="userColor" value="#69A54B" maxlength="7" spellcheck="false" aria-label="用户背景 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="userColor">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="userColor"><label>R <input type="number" min="0" max="255" data-rgb-key="userColor" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="userColor" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="userColor" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="userColor"></div>
+        </div>
+        <label class="gmcc-row"><span>透明度 <output data-output="userAlpha"></output></span><input type="range" min="0" max="100" step="1" data-key="userAlpha"></label>
+      </section>
+
+      <section class="gmcc-section">
+        <h4>AI 消息背景</h4>
+        <div class="gmcc-color-control" data-color-control="botColor">
+          <label class="gmcc-color-label" for="gmcc-botColor">背景颜色</label>
+          <div class="gmcc-color-tools"><input id="gmcc-botColor" type="color" data-key="botColor"><input type="text" class="gmcc-hex" data-hex-for="botColor" value="#69A54B" maxlength="7" spellcheck="false" aria-label="AI 背景 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="botColor">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="botColor"><label>R <input type="number" min="0" max="255" data-rgb-key="botColor" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="botColor" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="botColor" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="botColor"></div>
+        </div>
+        <label class="gmcc-row"><span>透明度 <output data-output="botAlpha"></output></span><input type="range" min="0" max="100" step="1" data-key="botAlpha"></label>
+      </section>
+
+      <section class="gmcc-section">
+        <h4>页面与聊天区域背景</h4>
+        <div class="gmcc-color-control" data-color-control="pageColor">
+          <label class="gmcc-color-label" for="gmcc-pageColor">页面背景颜色</label>
+          <div class="gmcc-color-tools"><input id="gmcc-pageColor" type="color" data-key="pageColor"><input type="text" class="gmcc-hex" data-hex-for="pageColor" value="#000000" maxlength="7" spellcheck="false" aria-label="页面背景 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="pageColor">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="pageColor"><label>R <input type="number" min="0" max="255" data-rgb-key="pageColor" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="pageColor" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="pageColor" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="pageColor"></div>
+        </div>
+        <label class="gmcc-row"><span>页面背景透明度 <output data-output="pageAlpha"></output></span><input type="range" min="0" max="100" step="1" data-key="pageAlpha"></label>
+        <div class="gmcc-color-control" data-color-control="chatColor">
+          <label class="gmcc-color-label" for="gmcc-chatColor">聊天区域颜色</label>
+          <div class="gmcc-color-tools"><input id="gmcc-chatColor" type="color" data-key="chatColor"><input type="text" class="gmcc-hex" data-hex-for="chatColor" value="#000000" maxlength="7" spellcheck="false" aria-label="聊天区域 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="chatColor">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="chatColor"><label>R <input type="number" min="0" max="255" data-rgb-key="chatColor" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="chatColor" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="chatColor" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="chatColor"></div>
+        </div>
+        <label class="gmcc-row"><span>聊天区域透明度 <output data-output="chatAlpha"></output></span><input type="range" min="0" max="100" step="1" data-key="chatAlpha"></label>
+      </section>
+
+
+      <section class="gmcc-section gmcc-chat-buttons-section">
+        <h4>聊天界面功能按钮颜色</h4>
+        <p class="gmcc-note">调整消息下方的编辑、复制、重生成、切换回复等常用按钮，以及发送/继续等聊天操作按钮。删除、取消等危险操作按钮尽量保留酒馆原有警示色。</p>
+        <div class="gmcc-color-control" data-color-control="chatButtonBgColor">
+          <label class="gmcc-color-label" for="gmcc-chatButtonBgColor">按钮背景颜色</label>
+          <div class="gmcc-color-tools"><input id="gmcc-chatButtonBgColor" type="color" data-key="chatButtonBgColor"><input type="text" class="gmcc-hex" data-hex-for="chatButtonBgColor" value="#282828" maxlength="7" spellcheck="false" aria-label="按钮背景 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="chatButtonBgColor">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="chatButtonBgColor"><label>R <input type="number" min="0" max="255" data-rgb-key="chatButtonBgColor" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="chatButtonBgColor" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="chatButtonBgColor" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="chatButtonBgColor"></div>
+        </div>
+        <label class="gmcc-row"><span>按钮背景不透明度 <output data-output="chatButtonBgAlpha"></output></span><input type="range" min="0" max="100" step="1" data-key="chatButtonBgAlpha"></label>
+        <div class="gmcc-color-control" data-color-control="chatButtonTextColor">
+          <label class="gmcc-color-label" for="gmcc-chatButtonTextColor">按钮图标 / 文字颜色</label>
+          <div class="gmcc-color-tools"><input id="gmcc-chatButtonTextColor" type="color" data-key="chatButtonTextColor"><input type="text" class="gmcc-hex" data-hex-for="chatButtonTextColor" value="#D4BE98" maxlength="7" spellcheck="false" aria-label="按钮文字 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="chatButtonTextColor">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="chatButtonTextColor"><label>R <input type="number" min="0" max="255" data-rgb-key="chatButtonTextColor" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="chatButtonTextColor" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="chatButtonTextColor" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="chatButtonTextColor"></div>
+        </div>
+        <div class="gmcc-color-control" data-color-control="chatButtonHoverColor">
+          <label class="gmcc-color-label" for="gmcc-chatButtonHoverColor">鼠标悬停背景颜色</label>
+          <div class="gmcc-color-tools"><input id="gmcc-chatButtonHoverColor" type="color" data-key="chatButtonHoverColor"><input type="text" class="gmcc-hex" data-hex-for="chatButtonHoverColor" value="#69A54B" maxlength="7" spellcheck="false" aria-label="按钮悬停 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="chatButtonHoverColor">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="chatButtonHoverColor"><label>R <input type="number" min="0" max="255" data-rgb-key="chatButtonHoverColor" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="chatButtonHoverColor" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="chatButtonHoverColor" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="chatButtonHoverColor"></div>
+        </div>
+        <div class="gmcc-color-control" data-color-control="chatButtonBorderColor">
+          <label class="gmcc-color-label" for="gmcc-chatButtonBorderColor">按钮边框颜色</label>
+          <div class="gmcc-color-tools"><input id="gmcc-chatButtonBorderColor" type="color" data-key="chatButtonBorderColor"><input type="text" class="gmcc-hex" data-hex-for="chatButtonBorderColor" value="#665C54" maxlength="7" spellcheck="false" aria-label="按钮边框 HEX 色值"><button type="button" class="menu_button gmcc-copy" data-copy-key="chatButtonBorderColor">复制</button></div>
+          <div class="gmcc-rgb" data-rgb-for="chatButtonBorderColor"><label>R <input type="number" min="0" max="255" data-rgb-key="chatButtonBorderColor" data-channel="r"></label><label>G <input type="number" min="0" max="255" data-rgb-key="chatButtonBorderColor" data-channel="g"></label><label>B <input type="number" min="0" max="255" data-rgb-key="chatButtonBorderColor" data-channel="b"></label></div>
+          <div class="gmcc-swatches" data-swatches-for="chatButtonBorderColor"></div>
+        </div>
+        <div class="gmcc-preview"><span>按钮预览：</span><button type="button" class="gmcc-live-button-preview">功能按钮</button><button type="button" class="gmcc-live-button-preview gmcc-live-button-preview-hover">悬停效果</button></div>
+      </section>
+
+      <section class="gmcc-section gmcc-background-section">
+        <h4>酒馆背景图片与自动切换</h4>
+        <p class="gmcc-note">选择一张或多张本地图片作为酒馆背景。图片会缩放压缩后保存在扩展设置中；最多保留 30 张。透明 PNG 会转换为 JPG。</p>
+        <div class="gmcc-bg-actions">
+          <button type="button" class="menu_button" id="gmcc-bg-feature-toggle">开启背景图片功能</button>
+          <label class="menu_button gmcc-bg-pick" for="gmcc-bg-files">选择背景图片</label>
+          <input id="gmcc-bg-files" type="file" accept="image/*" multiple hidden>
+        </div>
+        <div class="gmcc-bg-auto-row">
+          <label><input type="checkbox" id="gmcc-bg-auto"> 自动定时切换背景</label>
+          <label>切换间隔（分钟） <input type="number" id="gmcc-bg-interval" min="1" max="1440" step="1" value="5"></label>
+        </div>
+        <div class="gmcc-bg-actions">
+          <button type="button" class="menu_button" id="gmcc-bg-prev">上一张</button>
+          <button type="button" class="menu_button" id="gmcc-bg-next">下一张</button>
+          <button type="button" class="menu_button" id="gmcc-bg-clear">清空图片列表</button>
+        </div>
+        <p class="gmcc-note" id="gmcc-bg-status" aria-live="polite">尚未选择背景图片</p>
+        <p class="gmcc-note" id="gmcc-bg-import-status" aria-live="polite"></p>
+        <div id="gmcc-bg-list" class="gmcc-bg-list"></div>
+      </section>
+
+      <section class="gmcc-section">
+        <h4>快速颜色板</h4>
+        <p class="gmcc-note">点击色块可快速套用到当前颜色项。也可直接输入 HEX（如 #69A54B）或修改 R/G/B 数值。</p>
+        <div class="gmcc-palette" id="gmcc-global-palette"></div>
+      </section>
+      <div class="gmcc-actions"><button class="menu_button" id="gmcc-reset" type="button">恢复默认颜色</button></div>
+    </div>
+  </div>
+</div>
