@@ -4,7 +4,7 @@ const DEFAULTS = Object.freeze({
   userColor: '#69a54b', userAlpha: 24, botColor: '#69a54b', botAlpha: 24,
   pageColor: '#000000', pageAlpha: 0, chatColor: '#000000', chatAlpha: 0,
   chatButtonBgColor: '#282828', chatButtonBgAlpha: 88, chatButtonTextColor: '#d4be98', chatButtonHoverColor: '#69a54b', chatButtonBorderColor: '#665c54',
-  backgroundEnabled: false, backgroundAutoSwitch: false, backgroundInterval: 5, backgroundIndex: 0, backgroundImages: [],
+  backgroundEnabled: false, backgroundFit: 'cover', backgroundAutoSwitch: false, backgroundInterval: 5, backgroundIndex: 0, backgroundImages: [],
 });
 const PALETTE = [
   ['Gruvbox 米白', '#D4BE98'], ['奶油白', '#F2E5BC'], ['纯白', '#FFFFFF'], ['浅灰', '#C6C6C6'],
@@ -88,6 +88,11 @@ function updateColorControls($root, key, color) {
   $root.find(`[data-rgb-for="${key}"] [data-channel="g"]`).val(rgb.g);
   $root.find(`[data-rgb-for="${key}"] [data-channel="b"]`).val(rgb.b);
   $root.find(`[data-color-control="${key}"]`).css('--gmcc-current-color', color);
+  const $trigger = $root.find(`[data-toggle-color="${key}"]`);
+  if ($trigger.length) {
+    $trigger.css({ backgroundColor: color, color: (hexToRgb(color).r * 299 + hexToRgb(color).g * 587 + hexToRgb(color).b * 114) / 1000 > 145 ? '#202020' : '#ffffff' });
+    $trigger.text(color.toUpperCase());
+  }
 }
 function renderPalette($root, key, containerSelector) {
   const $container = $root.find(containerSelector);
@@ -99,6 +104,27 @@ function renderPalette($root, key, containerSelector) {
       .attr('data-apply-color', color).attr('data-target-key', key).css('background-color', color);
     $container.append($button);
   }
+}
+function decorateColorControls($root) {
+  $root.find('.gmcc-color-control').each(function () {
+    const $control = $(this);
+    if ($control.data('gmccDecorated')) return;
+    const key = this.dataset.colorControl;
+    const $label = $control.children('.gmcc-color-label').first();
+    const labelText = $label.text().trim();
+    const $header = $('<div class="gmcc-color-header"></div>');
+    const $title = $('<span class="gmcc-color-title"></span>').text(labelText);
+    const $trigger = $('<button type="button" class="gmcc-color-trigger" aria-expanded="false"></button>')
+      .attr('data-toggle-color', key).attr('aria-label', labelText + '：打开颜色设置');
+    const $editor = $('<div class="gmcc-color-editor" hidden></div>');
+    $label.remove();
+    $control.children().each(function () {
+      $editor.append(this);
+    });
+    $header.append($title, $trigger);
+    $control.append($header, $editor);
+    $control.data('gmccDecorated', true);
+  });
 }
 function syncControls($root, settings) {
   for (const key of Object.keys(DEFAULTS)) {
@@ -187,10 +213,20 @@ function applyBackgroundImage(settings) {
   const item = settings.backgroundImages[settings.backgroundIndex];
   if (!item?.dataUrl) return;
   target.style.backgroundImage = `url("${item.dataUrl}")`;
-  target.style.backgroundSize = 'cover';
-  target.style.backgroundPosition = 'center center';
-  target.style.backgroundRepeat = 'no-repeat';
-  target.style.backgroundAttachment = 'fixed';
+  const fit = settings.backgroundFit || 'cover';
+  const fitStyles = {
+    cover: { size: 'cover', position: 'center center', repeat: 'no-repeat', attachment: 'scroll' },
+    contain: { size: 'contain', position: 'center center', repeat: 'no-repeat', attachment: 'fixed' },
+    stretch: { size: '100% 100%', position: 'center center', repeat: 'no-repeat', attachment: 'fixed' },
+    tile: { size: 'auto', position: 'top left', repeat: 'repeat', attachment: 'fixed' },
+    center: { size: 'auto', position: 'center center', repeat: 'no-repeat', attachment: 'fixed' },
+    across: { size: 'cover', position: 'center center', repeat: 'no-repeat', attachment: 'fixed' },
+  };
+  const style = fitStyles[fit] || fitStyles.cover;
+  target.style.backgroundSize = style.size;
+  target.style.backgroundPosition = style.position;
+  target.style.backgroundRepeat = style.repeat;
+  target.style.backgroundAttachment = style.attachment;
 }
 function stopBackgroundTimer() {
   if (backgroundTimer !== null) window.clearInterval(backgroundTimer);
@@ -266,15 +302,30 @@ async function init() {
     return;
   }
   const $root = $('#gm-color-controls');
+  decorateColorControls($root);
   syncControls($root, settings);
   if (!Array.isArray(settings.backgroundImages)) settings.backgroundImages = [];
   if (settings.backgroundInterval === undefined) settings.backgroundInterval = 5;
   applyBackgroundImage(settings);
+  $root.find('#gmcc-bg-fit').val(settings.backgroundFit || 'cover');
   updateBackgroundStatus($root, settings);
   configureBackgroundTimer(settings, $root, ctx);
   let activeColorKey = 'speechText';
   $root.off('.gmcc');
 
+  $root.on('click.gmcc', '[data-toggle-color]', function () {
+    const key = this.dataset.toggleColor;
+    const $editor = $root.find(`[data-color-control="${key}"] .gmcc-color-editor`);
+    const opening = $editor.prop('hidden');
+    $editor.prop('hidden', !opening);
+    $(this).attr('aria-expanded', String(opening));
+    if (opening) activeColorKey = key;
+  });
+  $root.on('change.gmcc', '#gmcc-bg-fit', function () {
+    settings.backgroundFit = this.value;
+    applyBackgroundImage(settings);
+    ctx.saveSettingsDebounced();
+  });
   $root.on('focusin.gmcc click.gmcc', '[data-key], [data-hex-for], [data-rgb-key]', function () {
     activeColorKey = this.dataset.key || this.dataset.hexFor || this.dataset.rgbKey || activeColorKey;
   });
