@@ -69,3 +69,13 @@
   background: var(--gmcc-preview-hover, #69a54b) !important;
   border-color: var(--gmcc-preview-hover, #69a54b) !important;
 }
+
+/* Compact color rows: show a labeled color swatch button until opened. */
+.gmcc-settings .gmcc-color-header { display:flex; align-items:center; justify-content:space-between; gap:.75em; }
+.gmcc-settings .gmcc-color-title { font-weight:600; min-width:0; }
+.gmcc-settings .gmcc-color-trigger { min-width:7.2em; max-width:55%; border:1px solid rgba(255,255,255,.35); border-radius:6px; padding:.4em .7em; font:600 .9em var(--font-mono,monospace); cursor:pointer; box-shadow:inset 0 0 0 1px rgba(0,0,0,.12); }
+.gmcc-settings .gmcc-color-trigger:hover { filter:brightness(1.08); transform:translateY(-1px); }
+.gmcc-settings .gmcc-color-editor { border-top:1px solid var(--SmartThemeBorderColor,rgba(128,128,128,.25)); margin-top:.65em; padding-top:.55em; }
+.gmcc-settings .gmcc-color-editor[hidden] { display:none !important; }
+.gmcc-settings .gmcc-bg-fit-row { display:flex; flex-wrap:wrap; align-items:center; gap:.6em; margin:.7em 0; }
+.gmcc-settings #gmcc-bg-fit { min-width:14em; max-width:100%; }
