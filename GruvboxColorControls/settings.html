@@ -116,6 +116,16 @@
           <label class="menu_button gmcc-bg-pick" for="gmcc-bg-files">选择背景图片</label>
           <input id="gmcc-bg-files" type="file" accept="image/*" multiple hidden>
         </div>
+        <label class="gmcc-bg-fit-row">背景图片适应形式
+          <select id="gmcc-bg-fit">
+            <option value="cover">填充（覆盖整个区域）</option>
+            <option value="contain">适应（完整显示图片）</option>
+            <option value="stretch">拉伸（铺满宽高）</option>
+            <option value="tile">平铺（重复图片）</option>
+            <option value="center">居中（原始尺寸）</option>
+            <option value="across">跨区（固定覆盖整个页面）</option>
+          </select>
+        </label>
         <div class="gmcc-bg-auto-row">
           <label><input type="checkbox" id="gmcc-bg-auto"> 自动定时切换背景</label>
           <label>切换间隔（分钟） <input type="number" id="gmcc-bg-interval" min="1" max="1440" step="1" value="5"></label>
