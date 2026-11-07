@@ -1,4 +1,4 @@
-﻿# SillyTavern Gruvbox Color Controls v1.4
+﻿# SillyTavern Gruvbox Color Controls v1.5
 
 SillyTavern Gruvbox theme color and background controls extension.
 
