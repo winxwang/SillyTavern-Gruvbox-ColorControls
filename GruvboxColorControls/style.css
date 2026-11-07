@@ -79,3 +79,53 @@
 #send_form.gmcc-composer-collapsed > #gmcc-composer-collapsed-bar { display: flex !important; align-items: center; justify-content: flex-end; gap: .45em; width: 100%; min-height: 2.5em; box-sizing: border-box; margin: 0; padding: .25em .4em; }
 #gmcc-composer-collapsed-bar .gmcc-composer-icon-button { display: inline-flex; align-items: center; justify-content: center; min-width: 2.35em; width: 2.35em; height: 2.25em; padding: 0; border-radius: 6px; background: var(--gmcc-chat-button-bg, rgba(40,40,40,.88)); color: var(--gmcc-chat-button-text, #d4be98); border: 1px solid var(--gmcc-chat-button-border, #665c54); }
 #gmcc-composer-collapsed-bar .gmcc-composer-icon-button:hover { background: var(--gmcc-chat-button-hover, #69a54b); border-color: var(--gmcc-chat-button-hover, #69a54b); color: var(--gmcc-chat-button-text, #d4be98); }
+
+
+/* v1.5 categorized palette and StatusBlock theme controls */
+.gmcc-settings .gmcc-palette-tools { display:flex; align-items:center; gap:.6em; margin:.45em 0; }
+.gmcc-settings .gmcc-palette-tools label { font-size:.9em; opacity:.85; }
+.gmcc-settings #gmcc-palette-category { min-width:9em; max-width:100%; }
+.gmcc-settings .gmcc-status-preview { overflow:hidden; border:1px solid var(--gmcc-status-border,#665c54); border-radius:8px; margin:.75em 0 .4em; color:var(--gmcc-status-text,#d4be98); background:var(--gmcc-status-content-bg,rgba(40,40,40,.82)); }
+.gmcc-settings .gmcc-status-preview-title { padding:.55em .75em; color:var(--gmcc-status-title-text,#f2e5bc); background:var(--gmcc-status-title-bg,rgba(60,56,54,.96)); font-weight:700; }
+.gmcc-settings .gmcc-status-preview-body { padding:.7em .75em; }
+
+/* StatusBlock is a custom text wrapper emitted by the user's status-bar template. */
+#chat .mes .mes_text statusblock,
+#chat .mes .mes_text .status-block,
+#chat .mes .mes_text [data-status-block] {
+  display:block;
+  box-sizing:border-box;
+  margin:.65em 0;
+  padding:.65em .8em;
+  color:var(--gmcc-status-text,#d4be98) !important;
+  background:var(--gmcc-status-content-bg,rgba(40,40,40,.82)) !important;
+  border:1px solid var(--gmcc-status-border,#665c54) !important;
+  border-radius:8px;
+}
+#chat .mes .mes_text statusblock h1,
+#chat .mes .mes_text statusblock h2,
+#chat .mes .mes_text statusblock h3,
+#chat .mes .mes_text statusblock h4,
+#chat .mes .mes_text statusblock h5,
+#chat .mes .mes_text statusblock h6,
+#chat .mes .mes_text .status-block h1,
+#chat .mes .mes_text .status-block h2,
+#chat .mes .mes_text .status-block h3,
+#chat .mes .mes_text .status-block h4,
+#chat .mes .mes_text .status-block h5,
+#chat .mes .mes_text .status-block h6,
+#chat .mes .mes_text [data-status-block] h1,
+#chat .mes .mes_text [data-status-block] h2,
+#chat .mes .mes_text [data-status-block] h3,
+#chat .mes .mes_text [data-status-block] h4,
+#chat .mes .mes_text [data-status-block] h5,
+#chat .mes .mes_text [data-status-block] h6 {
+  color:var(--gmcc-status-title-text,#f2e5bc) !important;
+  background:var(--gmcc-status-title-bg,rgba(60,56,54,.96)) !important;
+  margin:.0em -.8em .55em;
+  padding:.55em .8em;
+  border-radius:7px 7px 0 0;
+}
+#chat .mes .mes_text statusblock,
+#chat .mes .mes_text .status-block,
+#chat .mes .mes_text [data-status-block] { color:var(--gmcc-status-text,#d4be98) !important; }
