@@ -102,6 +102,9 @@
   border:1px solid var(--gmcc-status-border,#665c54) !important;
   border-radius:8px;
 }
+#chat .mes .mes_text statusblock > :first-child,
+#chat .mes .mes_text .status-block > :first-child,
+#chat .mes .mes_text [data-status-block] > :first-child,
 #chat .mes .mes_text statusblock h1,
 #chat .mes .mes_text statusblock h2,
 #chat .mes .mes_text statusblock h3,
