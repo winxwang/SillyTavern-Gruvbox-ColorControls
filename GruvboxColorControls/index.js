@@ -4,16 +4,19 @@ const DEFAULTS = Object.freeze({
   userColor: '#69a54b', userAlpha: 24, botColor: '#69a54b', botAlpha: 24,
   pageColor: '#000000', pageAlpha: 0, chatColor: '#000000', chatAlpha: 0,
   chatButtonBgColor: '#282828', chatButtonBgAlpha: 88, chatButtonTextColor: '#d4be98', chatButtonHoverColor: '#69a54b', chatButtonBorderColor: '#665c54',
+  statusContentBgColor: '#282828', statusContentBgAlpha: 82, statusBorderColor: '#665c54',
+  statusTextColor: '#d4be98', statusTitleTextColor: '#f2e5bc',
+  statusTitleBgColor: '#3c3836', statusTitleBgAlpha: 96,
   backgroundEnabled: false, backgroundAutoSwitch: false, backgroundInterval: 5, backgroundIndex: 0, backgroundImages: [],
   composerAutoHide: false,
 });
 const PALETTE = [
-  ['Gruvbox 米白', '#D4BE98'], ['奶油白', '#F2E5BC'], ['纯白', '#FFFFFF'], ['浅灰', '#C6C6C6'],
-  ['草绿', '#69A54B'], ['浅草绿', '#A9D18E'], ['薄荷绿', '#8ECFA3'], ['深绿', '#315C3A'],
-  ['青色', '#65C3C8'], ['天蓝', '#75BDEB'], ['蓝色', '#4F86C6'], ['深蓝', '#263B5B'],
-  ['淡紫', '#C7A6E8'], ['紫色', '#9B72CF'], ['粉色', '#E6A1B4'], ['玫红', '#D16D8A'],
-  ['橙色', '#E39B54'], ['金黄', '#E5C07B'], ['砖红', '#CC6666'], ['深红', '#7A3030'],
-  ['深灰', '#3C3836'], ['石墨黑', '#282828'], ['黑色', '#000000'], ['透明底色用黑', '#000000'],
+  ['Gruvbox 米白', '#D4BE98', 'Gruvbox'], ['奶油白', '#F2E5BC', '浅色'], ['纯白', '#FFFFFF', '浅色'], ['浅灰', '#C6C6C6', '浅色'],
+  ['草绿', '#69A54B', '绿色'], ['浅草绿', '#A9D18E', '绿色'], ['薄荷绿', '#8ECFA3', '绿色'], ['深绿', '#315C3A', '绿色'],
+  ['青色', '#65C3C8', '冷色'], ['天蓝', '#75BDEB', '冷色'], ['蓝色', '#4F86C6', '冷色'], ['深蓝', '#263B5B', '冷色'],
+  ['淡紫', '#C7A6E8', '紫粉'], ['紫色', '#9B72CF', '紫粉'], ['粉色', '#E6A1B4', '紫粉'], ['玫红', '#D16D8A', '紫粉'],
+  ['橙色', '#E39B54', '暖色'], ['金黄', '#E5C07B', '暖色'], ['砖红', '#CC6666', '暖色'], ['深红', '#7A3030', '暖色'],
+  ['深灰', '#3C3836', '中性色'], ['石墨黑', '#282828', '中性色'], ['黑色', '#000000', '中性色'], ['透明底色用黑', '#000000', '中性色'],
 ];
 
 function normalizeHex(value) {
@@ -61,6 +64,11 @@ function applySettings(settings = getSettings()) {
   root.style.setProperty('--gmcc-chat-button-text', settings.chatButtonTextColor);
   root.style.setProperty('--gmcc-chat-button-hover', settings.chatButtonHoverColor);
   root.style.setProperty('--gmcc-chat-button-border', settings.chatButtonBorderColor);
+  root.style.setProperty('--gmcc-status-content-bg', rgba(settings.statusContentBgColor, settings.statusContentBgAlpha));
+  root.style.setProperty('--gmcc-status-border', settings.statusBorderColor);
+  root.style.setProperty('--gmcc-status-text', settings.statusTextColor);
+  root.style.setProperty('--gmcc-status-title-text', settings.statusTitleTextColor);
+  root.style.setProperty('--gmcc-status-title-bg', rgba(settings.statusTitleBgColor, settings.statusTitleBgAlpha));
   const preview = document.querySelector('#gm-color-controls .gmcc-live-button-preview');
   if (preview) {
     preview.style.setProperty('--gmcc-preview-bg', rgba(settings.chatButtonBgColor, settings.chatButtonBgAlpha));
@@ -94,10 +102,14 @@ function renderPalette($root, key, containerSelector) {
   const $container = $root.find(containerSelector);
   if (!$container.length) return;
   $container.empty();
-  for (const [name, color] of PALETTE) {
+  if (key === null) {
+    const $tools = $('<div class="gmcc-palette-tools"><label for="gmcc-palette-category">颜色分类</label><select id="gmcc-palette-category"><option value="全部">全部颜色</option><option>Gruvbox</option><option>浅色</option><option>绿色</option><option>冷色</option><option>紫粉</option><option>暖色</option><option>中性色</option></select></div>');
+    $container.append($tools);
+  }
+  for (const [name, color, category] of PALETTE) {
     const $button = $('<button type="button" class="gmcc-swatch"></button>')
       .attr('title', `${name} ${color}`).attr('aria-label', `${name} ${color}`)
-      .attr('data-apply-color', color).attr('data-target-key', key).css('background-color', color);
+      .attr('data-apply-color', color).attr('data-target-key', key).attr('data-palette-category', category || '全部').css('background-color', color);
     $container.append($button);
   }
 }
@@ -108,11 +120,13 @@ function syncControls($root, settings) {
       renderPalette($root, key, `[data-swatches-for="${key}"]`);
     }
   }
-  for (const key of ['userAlpha', 'botAlpha', 'pageAlpha', 'chatAlpha', 'chatButtonBgAlpha']) {
+  for (const key of ['userAlpha', 'botAlpha', 'pageAlpha', 'chatAlpha', 'chatButtonBgAlpha', 'statusContentBgAlpha', 'statusTitleBgAlpha']) {
     $root.find(`[data-key="${key}"]`).val(settings[key]);
     $root.find(`[data-output="${key}"]`).text(`${settings[key]}%`);
   }
   $root.find('#gmcc-composer-auto-hide').prop('checked', !!settings.composerAutoHide);
+  $root.find('#gmcc-palette-category').val('全部');
+  $root.find('#gmcc-global-palette [data-palette-category]').show();
   renderPalette($root, null, '#gmcc-global-palette');
 }
 // 给常见引号中的人物对白添加独立颜色，不改写原始消息文本。
@@ -416,6 +430,12 @@ async function init() {
     applySettings(settings);
     ctx.saveSettingsDebounced();
   });
+  $root.on('change.gmcc', '#gmcc-palette-category', function () {
+    const category = this.value;
+    $root.find('#gmcc-global-palette [data-palette-category]').each(function () {
+      $(this).toggle(category === '全部' || this.dataset.paletteCategory === category);
+    });
+  });
   $root.on('click.gmcc', '[data-apply-color]', function () {
     const key = this.dataset.targetKey || activeColorKey;
     const color = this.dataset.applyColor;
@@ -534,6 +554,6 @@ async function init() {
     ctx.saveSettingsDebounced();
   });
   observeChatForDialogue();
-  console.log('[GruvboxColorControls] Precision color panel with background rotation ready');
+  console.log('[GruvboxColorControls] v1.5 status bar styling and categorized color palette ready');
 }
 if (window.jQuery) jQuery(init);
